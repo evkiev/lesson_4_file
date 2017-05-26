@@ -10,7 +10,7 @@ public class _general {
 
 		String dir = args[0];
 		String file = args[1];
-		//14.30
+		//14.37
 		
 		findFile(dir, file);
 		
@@ -29,7 +29,7 @@ public class _general {
 			return;
 		}
 
-		// String[] list = f.list(); // список имён файлов в текущей папке
+		// String[] list = f.list(); // Г±ГЇГЁГ±Г®ГЄ ГЁГ¬ВёГ­ ГґГ Г©Г«Г®Гў Гў ГІГҐГЄГіГ№ГҐГ© ГЇГ ГЇГЄГҐ
 		File[] listFiles = startCatalog.listFiles();
 
 		if (listFiles == null) {
@@ -50,5 +50,5 @@ public class _general {
 
 	// if file.lastIndex("*")
 	//fileInCatalog.getName()
-	//метод contain
+	//Г¬ГҐГІГ®Г¤ contain
 }
