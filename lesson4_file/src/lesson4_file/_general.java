@@ -11,8 +11,6 @@ public class _general {
 		String dir = args[0];
 		String file = args[1];
 
-		//14.56
-		
 		findFile(dir, file);
 		
 		
@@ -20,13 +18,13 @@ public class _general {
 
 	static void findFile(String startPath, String fileNameToFind) throws IOException {
 		if (startPath == null) {
-			System.out.println("Error: Start path " + startPath + "  is empty");
+			System.out.println("Error (check): Start path " + startPath + "  is empty");
 			return;
 		}
 
 		File startCatalog = new File(startPath);
 		if (!startCatalog.exists()) {
-			System.out.println("Error: Start path " + startPath + " does not exist");
+			System.out.println("Error (check): Start path " + startPath + " does not exist");
 			return;
 		}
 
@@ -34,7 +32,7 @@ public class _general {
 		File[] listFiles = startCatalog.listFiles();
 
 		if (listFiles == null) {
-			System.out.println("Error: There are no files in start path");
+			System.out.println("Error (check): There are no files in start path");
 			return;
 		}
 
@@ -42,7 +40,7 @@ public class _general {
 			if (fileInCatalog.isDirectory()) {
 				findFile(fileInCatalog.getAbsolutePath(), fileNameToFind); // recursive
 			} else {
-				if (fileNameToFind.equals(fileInCatalog.getName().substring(0, fileNameToFind.lastIndexOf("*")))) {
+				if (fileNameToFind.equals(fileInCatalog.getName())) {
 					System.out.println("file found [" + fileInCatalog.getCanonicalPath() + "]");
 				}
 			}
