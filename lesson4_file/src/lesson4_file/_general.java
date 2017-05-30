@@ -6,6 +6,7 @@ import java.nio.file.Files;
 
 public class _general {
 
+
 	public static void main(String[] args) throws IOException {
 
 		String dir = args[0];
@@ -15,7 +16,8 @@ public class _general {
 		// findfilecontain(dir, file);
 		// copyfile(dir, file);
 
-		copyallfile(dir, file);
+
+		int k=0; copyallfile(dir, file, k);
 
 	}
 
@@ -95,7 +97,7 @@ public class _general {
 		}
 	}
 
-	static void copyallfile(String startdir, String filename) throws IOException {
+	static void copyallfile(String startdir, String filename, int k) throws IOException {
 
 		if (startdir == null) {
 			System.out.println("Error1 (check): Start path " + startdir + "  is empty");
@@ -116,26 +118,30 @@ public class _general {
 		}
 
 		// copy files
+
 		for (File fileInCatalog : listFiles) {
 			if (fileInCatalog.isDirectory()) {
-				copyallfile(fileInCatalog.getAbsolutePath(), filename); // recursive
+				copyallfile(fileInCatalog.getAbsolutePath(), filename, k); // recursive
 			} else {
 				if (fileInCatalog.getName().contains(filename.substring(0, filename.lastIndexOf("*")))) {
 
 					File dest = new File("d://Back/"
-							+ fileInCatalog.getName().substring(fileInCatalog.getName().lastIndexOf("/") + 1,
-									fileInCatalog.getName().lastIndexOf("."))
-							+ ".bac");
+							+ fileInCatalog.getName().substring(fileInCatalog.getName().lastIndexOf("/") + 1));
 
-					System.out.println("source is " + fileInCatalog + " dest " + dest);
-					Files.copy(fileInCatalog.toPath(), dest.toPath());
-					System.out.println("file " + fileInCatalog + " has copied successfully");
-
+					if (!dest.exists()) {
+						Files.copy(fileInCatalog.toPath(), dest.toPath());
+						k++;
+						System.out.println("file ----" + fileInCatalog + " ----has been copied successfully");
+					}
 					dest = null;
 				}
 			}
 
 		}
-
+		if (k == 0) {
+			System.out.println("There are no files with such musk");
+		} else {
+			System.out.println("---------------\n"+ k + " files have been copied");
+		}
 	}
 }
