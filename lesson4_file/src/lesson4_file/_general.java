@@ -2,7 +2,7 @@ package lesson4_file;
 
 import java.io.File;
 import java.io.IOException;
-
+import java.nio.file.Files;
 
 public class _general {
 
@@ -11,28 +11,28 @@ public class _general {
 		String dir = args[0];
 		String file = args[1];
 
-		findFile(dir, file);
-		
-		
+		// findFile(dir, file);
+		// findfilecontain(dir, file);
+		copyfile(dir, file);
+
 	}
 
 	static void findFile(String startPath, String fileNameToFind) throws IOException {
 		if (startPath == null) {
-			System.out.println("Error (check): Start path " + startPath + "  is empty");
+			System.out.println("Error1 (check): Start path " + startPath + "  is empty");
 			return;
 		}
 
 		File startCatalog = new File(startPath);
 		if (!startCatalog.exists()) {
-			System.out.println("Error (check): Start path " + startPath + " does not exist");
+			System.out.println("Error2 (check): Start path " + startPath + " does not exist");
 			return;
 		}
 
-		// String[] list = f.list(); // ñïèñîê èì¸í ôàéëîâ â òåêóùåé ïàïêå
 		File[] listFiles = startCatalog.listFiles();
 
 		if (listFiles == null) {
-			System.out.println("Error (check): There are no files in start path");
+			System.out.println("Error3 (check): There are no files in start path");
 			return;
 		}
 
@@ -44,10 +44,68 @@ public class _general {
 					System.out.println("file found [" + fileInCatalog.getCanonicalPath() + "]");
 				}
 			}
+
 		}
 	}
 
-	// if file.lastIndex("*")
-	//fileInCatalog.getName()
-	//ìåòîä contain
+	static void findfilecontain(String startPath, String fileNameToFind) throws IOException {
+		if (startPath == null) {
+			System.out.println("Error1 (check): Start path " + startPath + "  is empty");
+			return;
+		}
+
+		File startCatalog = new File(startPath);
+		if (!startCatalog.exists()) {
+			System.out.println("Error2 (check): Start path " + startPath + " does not exist");
+			return;
+		}
+
+		File[] listFiles = startCatalog.listFiles();
+
+		if (listFiles == null) {
+			System.out.println("Error3 (check): There are no files in start path");
+			return;
+		}
+
+		for (File fileInCatalog : listFiles) {
+			if (fileInCatalog.isDirectory()) {
+				findfilecontain(fileInCatalog.getAbsolutePath(), fileNameToFind); // recursive
+			} else {
+				if (fileInCatalog.getName().contains(fileNameToFind.substring(0, fileNameToFind.lastIndexOf("*")))) {
+					System.out.println("file found [" + fileInCatalog.getCanonicalPath() + "]");
+				}
+			}
+
+		}
+
+	}
+
+	static void copyfile(String dir, String filename) throws IOException {
+		File source = new File(dir + filename);
+		File dest = new File("d://Back/" + filename.substring(0, filename.lastIndexOf(".")) + ".bac");
+		if (source.exists() & !dest.exists()) {
+
+			System.out.println("source is " + source + " dest " + dest);
+			Files.copy(source.toPath(), dest.toPath());
+			System.out.println("file " + filename + " has copied successfully");
+		} else {
+			System.out.println("Error (check): There are no files in start path or dest file exists");
+		}
+	}
+	
+	static void copyallfile(String dir, String filename) throws IOException {
+		File source = new File(dir + filename);
+
+		if (source.exists()) {
+			
+			
+			File dest = new File("d://Back/" + filename.substring(0, filename.lastIndexOf(".")) + ".bac");
+			System.out.println("source is " + source + " dest " + dest);
+			Files.copy(source.toPath(), dest.toPath());
+			System.out.println("file " + filename + " has copied successfully");
+		} else {
+			System.out.println("Error (check): There are no files in start path or dest file exists");
+		}
+	}
+	
 }
