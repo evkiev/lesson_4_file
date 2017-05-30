@@ -13,7 +13,9 @@ public class _general {
 
 		// findFile(dir, file);
 		// findfilecontain(dir, file);
-		copyfile(dir, file);
+		// copyfile(dir, file);
+
+		copyallfile(dir, file);
 
 	}
 
@@ -92,20 +94,48 @@ public class _general {
 			System.out.println("Error (check): There are no files in start path or dest file exists");
 		}
 	}
-	
-	static void copyallfile(String dir, String filename) throws IOException {
-		File source = new File(dir + filename);
 
-		if (source.exists()) {
-			
-			
-			File dest = new File("d://Back/" + filename.substring(0, filename.lastIndexOf(".")) + ".bac");
-			System.out.println("source is " + source + " dest " + dest);
-			Files.copy(source.toPath(), dest.toPath());
-			System.out.println("file " + filename + " has copied successfully");
-		} else {
-			System.out.println("Error (check): There are no files in start path or dest file exists");
+	static void copyallfile(String startdir, String filename) throws IOException {
+
+		if (startdir == null) {
+			System.out.println("Error1 (check): Start path " + startdir + "  is empty");
+			return;
 		}
+
+		File startCatalog = new File(startdir);
+		if (!startCatalog.exists()) {
+			System.out.println("Error2 (check): Start path " + startdir + " does not exist");
+			return;
+		}
+
+		File[] listFiles = startCatalog.listFiles();
+
+		if (listFiles == null) {
+			System.out.println("Error3 (check): There are no files in start path");
+			return;
+		}
+
+		// copy files
+		for (File fileInCatalog : listFiles) {
+			if (fileInCatalog.isDirectory()) {
+				copyallfile(fileInCatalog.getAbsolutePath(), filename); // recursive
+			} else {
+				if (fileInCatalog.getName().contains(filename.substring(0, filename.lastIndexOf("*")))) {
+
+					File dest = new File("d://Back/"
+							+ fileInCatalog.getName().substring(fileInCatalog.getName().lastIndexOf("/") + 1,
+									fileInCatalog.getName().lastIndexOf("."))
+							+ ".bac");
+
+					System.out.println("source is " + fileInCatalog + " dest " + dest);
+					Files.copy(fileInCatalog.toPath(), dest.toPath());
+					System.out.println("file " + fileInCatalog + " has copied successfully");
+
+					dest = null;
+				}
+			}
+
+		}
+
 	}
-	
 }
