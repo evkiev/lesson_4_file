@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 public class _general {
-
+	public static int count = 0;
 
 	public static void main(String[] args) throws IOException {
 
@@ -16,8 +16,12 @@ public class _general {
 		// findfilecontain(dir, file);
 		// copyfile(dir, file);
 
-
-		int k=0; copyallfile(dir, file, k);
+		copyallfile(dir, file);
+		if (count == 0) {
+			System.out.println("There are no files with such musk");
+		} else {
+			System.out.println("---------------\n" + count + " files have been copied");
+		}
 
 	}
 
@@ -97,7 +101,7 @@ public class _general {
 		}
 	}
 
-	static void copyallfile(String startdir, String filename, int k) throws IOException {
+	static void copyallfile(String startdir, String filename) throws IOException {
 
 		if (startdir == null) {
 			System.out.println("Error1 (check): Start path " + startdir + "  is empty");
@@ -105,6 +109,7 @@ public class _general {
 		}
 
 		File startCatalog = new File(startdir);
+
 		if (!startCatalog.exists()) {
 			System.out.println("Error2 (check): Start path " + startdir + " does not exist");
 			return;
@@ -120,28 +125,18 @@ public class _general {
 		// copy files
 
 		for (File fileInCatalog : listFiles) {
+
 			if (fileInCatalog.isDirectory()) {
-				copyallfile(fileInCatalog.getAbsolutePath(), filename, k); // recursive
-			} else {
-				if (fileInCatalog.getName().contains(filename.substring(0, filename.lastIndexOf("*")))) {
-
-					File dest = new File("d://Back/"
-							+ fileInCatalog.getName().substring(fileInCatalog.getName().lastIndexOf("/") + 1));
-
-					if (!dest.exists()) {
-						Files.copy(fileInCatalog.toPath(), dest.toPath());
-						k++;
-						System.out.println("file ----" + fileInCatalog + " ----has been copied successfully");
-					}
-					dest = null;
-				}
+				copyallfile(fileInCatalog.getAbsolutePath(), filename); // recursive
 			}
 
+			if (fileInCatalog.getName().contains(filename.substring(0, filename.lastIndexOf("*")))) {
+				File dest = new File("d://Back/" + fileInCatalog.getName());
+				count++;
+				Files.copy(fileInCatalog.toPath(), dest.toPath());
+				System.out.println("\tfile ----" + fileInCatalog + " ----has been copied successfully");
+			}
 		}
-		if (k == 0) {
-			System.out.println("There are no files with such musk");
-		} else {
-			System.out.println("---------------\n"+ k + " files have been copied");
-		}
+
 	}
 }
