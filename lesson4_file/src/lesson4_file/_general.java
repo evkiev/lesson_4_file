@@ -130,11 +130,13 @@ public class _general {
 				copyallfile(fileInCatalog.getAbsolutePath(), filename); // recursive
 			}
 
-			if (fileInCatalog.getName().contains(filename.substring(0, filename.lastIndexOf("*")))) {
-				File dest = new File("d://Back/" + fileInCatalog.getName());
-				count++;
-				Files.copy(fileInCatalog.toPath(), dest.toPath());
-				System.out.println("\tfile ----" + fileInCatalog + " ----has been copied successfully");
+			else {
+				if (fileInCatalog.getName().contains(filename.substring(0, filename.lastIndexOf("*")))) {
+					File dest = new File("d://Back/" + fileInCatalog.getName());
+					count++;
+					Files.copy(fileInCatalog.toPath(), dest.toPath());
+					System.out.println("file ----" + fileInCatalog + " ----has been copied successfully");
+				}
 			}
 		}
 
